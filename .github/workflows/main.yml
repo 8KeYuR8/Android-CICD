@@ -98,7 +98,7 @@ jobs:
 
   distribute:
     name: Distribute bundle to Google Play
-    needs: test
+    needs: instrumentation-test
     runs-on: ubuntu-latest
 
     steps:
