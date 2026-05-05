@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.sonarqube'
 
 android {
+    namespace "com.unique.simplealarmclock"
+
     compileSdkVersion 29
 
     defaultConfig {
