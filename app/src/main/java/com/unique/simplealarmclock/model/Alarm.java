@@ -162,11 +162,28 @@ public class Alarm implements Serializable {
             }
             Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
 
-            alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.getTimeInMillis(),
-                    alarmPendingIntent
-            );
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    if (alarmManager.canScheduleExactAlarms()) {
+        alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                alarmPendingIntent
+        );
+    } else {
+        // Fallback: use inexact alarm
+        alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                alarmPendingIntent
+        );
+    }
+} else {
+    alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            calendar.getTimeInMillis(),
+            alarmPendingIntent
+    );
+}
         } else {
             String toastText = String.format("Recurring Alarm %s scheduled for %s at %02d:%02d", title, getRecurringDaysText(), hour, minute);
             Toast.makeText(context, toastText, Toast.LENGTH_LONG).show();
