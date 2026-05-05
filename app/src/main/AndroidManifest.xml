@@ -26,12 +26,14 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.AlarmService" />
+        <service android:name=".service.AlarmService" android:exported="false" android:foregroundServiceType="alarm" />
         <service android:name=".service.RescheduleAlarmsService" />
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
 </manifest>
