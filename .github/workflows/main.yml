@@ -162,32 +162,41 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-  
-      - name: Install Android Build Tools
+
+      - name: Install Build Tools
         run: |
           yes | sdkmanager "build-tools;34.0.0"
 
-      - name: Assemble Release Bundle
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > keystore.jks
+
+      - name: Build APK & AAB
         run: VERSION_CODE=${{ github.run_number }} ./gradlew assembleRelease bundleRelease
 
-      - name: Sign AAB
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: app/build/outputs/bundle/release
-          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
-          keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
+      - name: Align APK
+        run: |
+          $ANDROID_HOME/build-tools/34.0.0/zipalign -v -p 4 \
+          app/build/outputs/apk/release/app-release-unsigned.apk \
+          app-release-aligned.apk
 
       - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
-          keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
-          buildToolsVersion: "34.0.0"
+        run: |
+          $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
+          --ks keystore.jks \
+          --ks-key-alias "${{ secrets.ANDROID_DEVS_ALIAS }}" \
+          --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+          --key-pass pass:${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }} \
+          --out app-release.apk \
+          app-release-aligned.apk
+
+      - name: Sign AAB
+        run: jarsigner \
+          -keystore keystore.jks \
+          -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
+          -keypass "${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}" \
+          app/build/outputs/bundle/release/app-release.aab \
+          "${{ secrets.ANDROID_DEVS_ALIAS }}"
 
       - name: Upload artifacts (APK + AAB)
         uses: actions/upload-artifact@v4
