@@ -1,2 +1,17 @@
 include ':app'
 rootProject.name = "Simple Alarm Clock"
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
