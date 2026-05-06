@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,8 +37,8 @@ public class AlarmsListFragment extends Fragment implements OnToggleAlarmListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         alarmRecyclerViewAdapter = new AlarmRecyclerViewAdapter(this);
-        alarmsListViewModel = ViewModelProviders.of(this).get(AlarmListViewModel.class);
-        alarmsListViewModel.getAlarmsLiveData().observe(this, new Observer<List<Alarm>>() {
+        alarmsListViewModel = new ViewModelProvider(this).get(AlarmListViewModel.class);
+        alarmsListViewModel.getAlarmsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Alarm>>() {
             @Override
             public void onChanged(List<Alarm> alarms) {
                 if (alarms != null) {

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.unique.simplealarmclock.R;
 import com.unique.simplealarmclock.databinding.ActivityRingBinding;
@@ -45,7 +45,7 @@ public class RingActivity extends AppCompatActivity {
                 keyguardManager.requestDismissKeyguard(this, null);
             }*/
 
-        alarmsListViewModel = ViewModelProviders.of(this).get(AlarmListViewModel.class);
+        alarmsListViewModel = new ViewModelProvider(this).get(AlarmListViewModel.class);
         Bundle bundle=getIntent().getBundleExtra(getString(R.string.bundle_alarm_obj));
         if (bundle!=null)
             alarm =(Alarm)bundle.getSerializable(getString(R.string.arg_alarm_obj));

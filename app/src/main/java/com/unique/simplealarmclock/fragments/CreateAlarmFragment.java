@@ -13,7 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.unique.simplealarmclock.R;
@@ -42,7 +42,7 @@ public class CreateAlarmFragment extends Fragment {
         if (getArguments() != null) {
             alarm= (Alarm) getArguments().getSerializable(getString(R.string.arg_alarm_obj));
         }
-        createAlarmViewModel = ViewModelProviders.of(this).get(CreateAlarmViewModel.class);
+        createAlarmViewModel = new ViewModelProvider(this).get(CreateAlarmViewModel.class);
     }
 
     @Override
