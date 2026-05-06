@@ -191,7 +191,8 @@ jobs:
           app-release-aligned.apk
 
       - name: Sign AAB
-        run: jarsigner \
+        run: |
+          jarsigner \
           -keystore keystore.jks \
           -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
           -keypass "${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}" \
