@@ -45,7 +45,7 @@ public class AlarmService extends Service {
         Intent notificationIntent = new Intent(this, RingActivity.class);
         notificationIntent.putExtra(getString(R.string.bundle_alarm_obj),bundle);
 //        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         String alarmTitle=getString(R.string.alarm_title);
         if(alarm!=null) {
             alarmTitle = alarm.getTitle();
