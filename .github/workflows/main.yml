@@ -172,6 +172,12 @@ jobs:
           alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
           keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
 
+      - name: Upload Signed AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: app/build/outputs/bundle/release/*.aab
+
       # - name: Setup Authorization with Google Play Store
       #   run: echo '${{ secrets.PLAY_AUTH_JSON }}' > service_account.json
 
