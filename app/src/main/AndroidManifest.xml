@@ -27,7 +27,7 @@
         </receiver>
 
         <service android:name=".service.AlarmService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
-        <service android:name=".service.RescheduleAlarmsService" android:exported="false" android:foregroundServiceType="dataSync" />
+        <service android:name=".service.RescheduleAlarmsService" android:exported="false" />
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
