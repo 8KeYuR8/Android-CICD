@@ -10,7 +10,7 @@ android {
         applicationId "com.unique.simplealarmclock"
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 1
+        versionCode System.getenv("VERSION_CODE") != null ? System.getenv("VERSION_CODE").toInteger() : 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

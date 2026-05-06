@@ -157,14 +157,11 @@ jobs:
           java-version: 17
           cache: 'gradle'
 
-      - name: Version Bump
-        uses: chkfung/android-version-actions@v1.2.3
-        with:
-          gradlePath: app/build.gradle.kts
-          versionCode: ${{ github.run_number }}
+      - name: Set version environment
+        run: echo "VERSION_CODE=${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Assemble Release Bundle
-        run: ./gradlew bundleRelease
+        run: VERSION_CODE=${{ github.run_number }} ./gradlew bundleRelease
 
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1
