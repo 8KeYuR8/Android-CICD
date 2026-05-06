@@ -139,7 +139,7 @@ jobs:
   #         path: app/build/outputs/apk/debug/app-debug.apk
 
   distribute:
-    name: Distribute bundle to Google Play
+    name: Distribute to Firebase
     needs: static-code-analysis
     runs-on: ubuntu-latest
 
@@ -161,9 +161,9 @@ jobs:
         run: echo "VERSION_CODE=${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Assemble Release Bundle
-        run: VERSION_CODE=${{ github.run_number }} ./gradlew bundleRelease
+        run: VERSION_CODE=${{ github.run_number }} ./gradlew assembleRelease bundleRelease
 
-      - name: Sign Release
+      - name: Sign AAB
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/bundle/release
@@ -172,11 +172,30 @@ jobs:
           alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
           keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
 
-      - name: Upload Signed AAB
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
+          keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
+
+      - name: Upload artifacts (APK + AAB)
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-aab
-          path: app/build/outputs/bundle/release/*.aab
+          name: release-builds
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+
+      - name: Upload APK to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers
+          file: app/build/outputs/apk/release/app-release.apk
 
       # - name: Setup Authorization with Google Play Store
       #   run: echo '${{ secrets.PLAY_AUTH_JSON }}' > service_account.json

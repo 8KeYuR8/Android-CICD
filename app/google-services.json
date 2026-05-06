@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "467412825559",
+    "project_id": "android-cicd-1826c",
+    "storage_bucket": "android-cicd-1826c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467412825559:android:6685ac1ffb9df57e5cc792",
+        "android_client_info": {
+          "package_name": "com.unique.simplealarmclock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx_T8Oi4cXwT_7bUeMdrsGwZDOJJDJEVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
