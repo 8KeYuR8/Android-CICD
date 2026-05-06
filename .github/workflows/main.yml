@@ -160,12 +160,15 @@ jobs:
       - name: Set version environment
         run: echo "VERSION_CODE=${{ github.run_number }}" >> $GITHUB_ENV
 
-      - name: Assemble Release Bundle
-        run: VERSION_CODE=${{ github.run_number }} ./gradlew assembleRelease bundleRelease
-
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+  
       - name: Install Android Build Tools
         run: |
           yes | sdkmanager "build-tools;34.0.0"
+
+      - name: Assemble Release Bundle
+        run: VERSION_CODE=${{ github.run_number }} ./gradlew assembleRelease bundleRelease
 
       - name: Sign AAB
         uses: r0adkll/sign-android-release@v1
